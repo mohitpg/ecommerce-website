@@ -111,8 +111,7 @@ input {
 
 input::placeholder { font: inherit; }
 
-body { background: var(--white);
-overflow: hidden; }
+body { background: var(--white); }
 
 /**
  * scrollbar style

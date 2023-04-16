@@ -122,8 +122,7 @@ input::-ms-input-placeholder { font: inherit; }
 input::placeholder { font: inherit; }
 
 body { 
-  background: var(--white);
-  overflow: hidden;}
+  background: var(--white);}
 
 /**
  * scrollbar style
