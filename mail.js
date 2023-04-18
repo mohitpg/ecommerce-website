@@ -35,6 +35,9 @@ app.post("/login",function(req,res){
     reques.write(jsondata);
     reques.end();
 })
+app.get("/trackOrder",function(req,res){
+    res.sendFile(__dirname+"/trackOrder/track.html")
+})
 
 app.listen(3000,()=>{
     console.log("ok");
