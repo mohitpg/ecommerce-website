@@ -3,7 +3,8 @@ const bodyParser= require("body-parser");
 const https = require('https');
 const { stringify } = require("querystring");
 const app=express();
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));e
+app.set("view engine","ejs")
 app.use(bodyParser.urlencoded({extended: true}));
 app.get("/",function(req,res){
     res.sendFile(__dirname+"/index.html")
@@ -35,8 +36,8 @@ app.post("/login",function(req,res){
     reques.write(jsondata);
     reques.end();
 })
-app.get("/trackOrder",function(req,res){
-    res.sendFile(__dirname+"/trackOrder/track.html")
+app.get("/views",function(req,res){
+    res.render("index");
 })
 
 app.listen(3000,()=>{
