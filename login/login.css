@@ -1,6 +1,8 @@
 html,
 body {
   height: 100%;
+  background-image: -webkit-linear-gradient(65deg, #6f89f4 50%, #E4E9FD 50%);
+  min-height: 800px;
 }
 
 body {

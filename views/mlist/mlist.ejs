@@ -1,0 +1,17 @@
+<%- include("../header.ejs") %>
+    <div class="box" id="heading" style="margin-top: 5%;">
+        <h1>Your Shopping List</h1>
+    </div>
+    <div class="box">
+        <% for(let i=0;i<iteml.length; i++){ %>
+            <div class="item">
+                <input type="checkbox">
+                <p><%= iteml[i] %></p>
+            </div>
+        <% } %>
+        <form class="item" action="/views/mlist" method="post">
+            <input type="text" name="newitem" placeholder="Add New Item">
+            <button type="submit" name="button">+</button>
+        </form>
+    </div>
+<%- include("../footer.ejs") %>
