@@ -2,6 +2,7 @@ const express=require("express");
 const bodyParser= require("body-parser");
 const https = require('https');
 const mongoose= require("mongoose");
+const notifier = require('node-notifier');
 const { stringify } = require("querystring");
 const app=express();
 app.set("view engine","ejs");
@@ -11,9 +12,14 @@ mongoose.connect("mongodb://127.0.0.1:27017/temp");
 const userSchema= {
     name: String,
     email: String,
-    password: String
+    password: String,
+    product: [String]
 }
 const User= mongoose.model("User",userSchema);
+const productSchema={
+    code: String
+}
+const Product= mongoose.model("Product",productSchema);
 
 
 app.get("/",function(req,res){
@@ -37,15 +43,29 @@ app.get("/register",function(req,res){
 app.post("/login",function(req,res){
     femail=req.body.email;
     let pwd=req.body.pwd;
-    let temp= User.find({},'name').exec();
-    temp.then(function(res){
-        let temp2= res[0].name;
-        console.log(temp2)
-        console.log(res);
+    var loginflag=false;
+    let userdata= User.find({}).exec();
+    userdata.then(function(result){
+        console.log(result[0].password);
+        for(let i=0;i<result.length;i++){
+            let auth=result[i].password;
+            console.log(auth);
+            if(auth===pwd){
+                loginflag=true;
+            }
+        }
+        if(loginflag===false){
+            notifier.notify('Invalid username or password');
+            res.redirect("/login");
+        }
+        else{
+        loginstat=true;
+        logout=false;
+        res.redirect("/");
+    }
     })
-    loginstat=true;
-    logout=false;
-    res.redirect("/");
+    console.log(pwd);
+    console.log(loginflag);
     
 })
 app.post("/register",function(req,res){
@@ -55,7 +75,8 @@ app.post("/register",function(req,res){
     const user= new User({
         name: rname,
         email: remail,
-        password: rpass
+        password: rpass,
+        product: []
     })
     user.save();
     res.redirect("/");
@@ -80,19 +101,52 @@ app.get("/views/mcard",function(req,res){
 })
 app.get("/views/mcart",function(req,res){
     if(loginstat==false){
-            res.send("<h1>Sorry! You are not logged in</h1>");
-    }else{
-    res.render("mcart/mcart");}
+        res.send("<h1>Sorry! You are not logged in</h1>");
+    }
+    else{
+        let pdata= Product.find({}).exec();
+        pdata.then(function(result){
+            res.render("mcart/mcart",{itemc:result});
+        })
+    }
+})
+app.post("/views/mcart",function(req,res){
+    let itemp= req.body.newitem;
+    const newitem= new Product({
+        code: itemp
+    })
+    newitem.save();
+    res.redirect("/views/mcart");
+})
+app.post("/cartdelete",function(req,res){
+    const lidtemp=req.body.cartcheckbox;
+    console.log(lidtemp)
+    Product.findByIdAndRemove(lidtemp).exec();
+    res.redirect("/views/mcart");
 })
 app.get("/views/mlist",function(req,res){
     if(loginstat==false){
             res.send("<h1>Sorry! You are not logged in</h1>");
-    }else{
-    res.render("mlist/mlist",{iteml:items});}
+    }
+    else{
+        let pdata= Product.find({}).exec();
+        pdata.then(function(result){
+            res.render("mlist/mlist",{iteml:result});
+        })
+    }
 })
 app.post("/views/mlist",function(req,res){
-    var itemp= req.body.newitem;
-    items.push(itemp);
+    let itemp= req.body.newitem;
+    const newitem= new Product({
+        code: itemp
+    })
+    newitem.save();
+    res.redirect("/views/mlist");
+})
+app.post("/listdelete",function(req,res){
+    const lidtemp=req.body.listcheckbox;
+    console.log(lidtemp)
+    Product.findByIdAndRemove(lidtemp).exec();
     res.redirect("/views/mlist");
 })
 app.get("/views/mprod",function(req,res){

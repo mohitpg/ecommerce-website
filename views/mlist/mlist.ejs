@@ -3,11 +3,14 @@
         <h1>Your Shopping List</h1>
     </div>
     <div class="box">
-        <% for(let i=0;i<iteml.length; i++){ %>
+        <% iteml.forEach(function(item){ %>
+            <form action="/listdelete" method="post">
             <div class="item">
-                <p><%= iteml[i] %></p>
+                <input type="checkbox" name="listcheckbox" value="<%=item._id%>" onchange="this.form.submit()">
+                <p><%= item.code %></p>
             </div>
-        <% } %>
+            </form>
+        <% }) %>
         <form class="item" action="/views/mlist" method="post">
             <input type="text" name="newitem" placeholder="Add New Item">
             <button type="submit" name="button">+</button>
