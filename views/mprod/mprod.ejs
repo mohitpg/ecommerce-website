@@ -1,3 +1,17 @@
 <%- include("../header.ejs") %>
-
+    <div class="box" id="heading" style="margin-top: 5%;">
+        <h1>Products</h1>
+    </div>
+    <div class="box">
+        <% itemc.forEach(function(items){ %>
+            <div class="item">
+                <input type="checkbox" name="pcheckbox"  onchange="this.form.submit()">
+                <p><%= items.item %>-₹<%= items.price %></p>
+            </div>
+        <% }) %>
+        <form class="item" action="/views/mprod" method="post">
+            <input type="text" name="newitem" placeholder="Add New Item">
+            <button type="submit" name="button">+</button>
+        </form>
+    </div>
 <%- include("../footer.ejs") %>

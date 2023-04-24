@@ -20,7 +20,12 @@ const productSchema={
     code: String
 }
 const Product= mongoose.model("Product",productSchema);
-
+const listproductSchema={
+    code: String
+}
+const listProduct= mongoose.model("listProduct",productSchema);
+const invSchema=mongoose.Schema;
+const Inventory= mongoose.model("Inventory",new invSchema({item:String, price:Number}),'inventory');
 
 app.get("/",function(req,res){
     res.sendFile(__dirname+"/index.html")
@@ -129,15 +134,16 @@ app.get("/views/mlist",function(req,res){
             res.send("<h1>Sorry! You are not logged in</h1>");
     }
     else{
-        let pdata= Product.find({}).exec();
+        let pdata= listProduct.find({}).exec();
         pdata.then(function(result){
+            console.log(result)
             res.render("mlist/mlist",{iteml:result});
         })
     }
 })
 app.post("/views/mlist",function(req,res){
     let itemp= req.body.newitem;
-    const newitem= new Product({
+    const newitem= new listProduct({
         code: itemp
     })
     newitem.save();
@@ -146,7 +152,7 @@ app.post("/views/mlist",function(req,res){
 app.post("/listdelete",function(req,res){
     const lidtemp=req.body.listcheckbox;
     console.log(lidtemp)
-    Product.findByIdAndRemove(lidtemp).exec();
+    listProduct.findByIdAndRemove(lidtemp).exec();
     res.redirect("/views/mlist");
 })
 app.get("/views/mprod",function(req,res){
@@ -159,13 +165,27 @@ app.get("/views/mprod",function(req,res){
         res.send("<h1>Sorry! You are not logged in</h1>");
     }
     else{
-    res.render("mprod/mprod");}
+        let pdata= Inventory.find({}).exec();
+        pdata.then(function(result){
+            result.forEach(function(item){
+                console.log(item);
+                console.log(item.price);
+            })
+            res.render("mprod/mprod",{itemc:result});
+        })
+    }
 })
 app.get("/views/muser",function(req,res){
     if(loginstat==false){
-            res.send("<h1>Sorry! You are not logged in</h1>");
-    }else{
-    res.render("muser/muser");}
+        res.send("<h1>Sorry! You are not logged in</h1>");
+    }
+    else{
+        let pdata= User.find({email: femail}).exec();
+        pdata.then(function(result){
+            console.log(result)
+            res.render("muser/muser",{itemc:result});
+        })
+    }
 })
 app.listen(3000,()=>{
     console.log("ok");

@@ -1,3 +1,15 @@
 <%- include("../header.ejs") %>
-
+    <div class="box" id="heading" style="margin-top: 5%;">
+        <h1>User Details</h1>
+    </div>
+    <div class="box" id="heading" style="margin-top: 5%;font-size: 1rem;background-color: aqua;">
+        <h1>Name:<%= itemc[0].name %></h1>
+    </div>
+    <div class="box" id="heading" style="font-size: 1rem;background-color: aquamarine;">
+        <h1>Email:<%= itemc[0].email %></h1>
+    </div>
+    <div class="box" id="heading" style="font-size: 1rem;background-color: cornflowerblue;">
+        <h1>Password:<%= itemc[0].password %></h1>
+    </div>
+    
 <%- include("../footer.ejs") %>
