@@ -8,7 +8,7 @@ const app=express();
 app.set("view engine","ejs");
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
-mongoose.connect("mongodb://127.0.0.1:27017/temp");
+mongoose.connect("mongodb://127.0.0.1:27017/ecom");
 const userSchema= {
     name: String,
     email: String,
@@ -34,6 +34,7 @@ var loginstat=false;
 var logout=true;
 var femail;
 var items=[];
+var checkout=[];
 app.get("/login",function(req,res){
     if(loginstat==true){
         res.send("<h1>You are already Logged in!</h1>");
@@ -97,12 +98,6 @@ app.get("/views/trackOrder",function(req,res){
             res.send("<h1>Sorry! You are not logged in</h1>");
     }else{  
     res.render("trackOrder/track");}
-})
-app.get("/views/mcard",function(req,res){
-    if(loginstat==false){
-            res.send("<h1>Sorry! You are not logged in</h1>");
-    }else{
-    res.render("mcard/mcard");}
 })
 app.get("/views/mcart",function(req,res){
     if(loginstat==false){
@@ -186,6 +181,30 @@ app.get("/views/muser",function(req,res){
             res.render("muser/muser",{itemc:result});
         })
     }
+})
+app.get("/views/order",function(req,res){
+    if(loginstat==false){
+            res.send("<h1>Sorry! You are not logged in</h1>");
+    }
+    else{
+        let pdata= Product.find({}).exec();
+        pdata.then(function(result){
+            checkout=[];
+            result.forEach(function(items){
+                let temp3=items.code;
+                let tdata= Inventory.find({item:temp3}).exec();
+                tdata.then(function(resdata){
+                    console.log(resdata);
+                    checkout.push(resdata[0].item);
+                    checkout.push(resdata[0].price);
+                })
+            })
+            res.render("order/order",{itemc:checkout});
+        })
+    }
+})
+app.post("/views/order",function(req,res){
+    res.render("order/order",{itemc:checkout})
 })
 app.listen(3000,()=>{
     console.log("ok");

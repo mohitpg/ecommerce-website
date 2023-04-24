@@ -1,0 +1,17 @@
+<%- include("../header.ejs") %>
+    <div class="box" id="heading" style="margin-top: 5%;">
+        <h1>Products</h1>
+    </div>
+    <div class="box">
+        <% for(let i=1;i<itemc.length ;i+=2){ %>
+            <div class="item">
+                <input type="checkbox" name="pcheckbox"  onchange="this.form.submit()">
+                <p><%= itemc[i-1] %>-₹<%= itemc[i] %></p>
+            </div>
+        <% } %>
+        <form class="item" action="/views/order" method="post">
+            <input type="text" name="newitem" placeholder="Add from cart">
+            <button type="submit" name="button">+</button>
+        </form>
+    </div>
+<%- include("../footer.ejs") %>
