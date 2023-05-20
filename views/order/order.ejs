@@ -9,6 +9,7 @@
                 <p><%= itemc[i-1] %>-₹<%= itemc[i] %></p>
             </div>
         <% } %>
+        <input type="text" name="newitem" placeholder="Enter address">
         <form class="item" action="/views/order" method="post">
             <input type="text" name="newitem" placeholder="Add from cart">
             <button type="submit" name="button">+</button>

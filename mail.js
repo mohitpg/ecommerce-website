@@ -170,13 +170,18 @@ app.get("/views/mprod",function(req,res){
         })
     }
 })
+app.post("/views/mprod",function(req,res){
+    res.redirect("/views/mprod");
+})
 app.get("/views/muser",function(req,res){
     if(loginstat==false){
         res.send("<h1>Sorry! You are not logged in</h1>");
     }
     else{
+        console.log(femail);
         let pdata= User.find({email: femail}).exec();
         pdata.then(function(result){
+            console.log("wot")
             console.log(result)
             res.render("muser/muser",{itemc:result});
         })
@@ -205,6 +210,7 @@ app.get("/views/order",function(req,res){
 })
 app.post("/views/order",function(req,res){
     res.render("order/order",{itemc:checkout})
+    notifier.notify('Your order has been placed');
 })
 app.listen(3000,()=>{
     console.log("ok");
