@@ -10,25 +10,25 @@ app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
 async function run(){
     await mongoose.connect("mongodb+srv://mohitpgupta1102:Secret1102@clusteroose.czt0fuc.mongodb.net/ecom");
-    const userSchema= {
-       name: String,
-       email: String,
-       password: String,
-       product: [String]
-    }
-    const User= mongoose.model("User",userSchema);
-    const productSchema={
-        code: String
-    }
-    const Product= mongoose.model("Product",productSchema);
-    const listproductSchema={
-        code: String
-    }
-    const listProduct= mongoose.model("listProduct",productSchema);
-    const invSchema=mongoose.Schema;
-    const Inventory= mongoose.model("Inventory",new invSchema({item:String, price:Number}),'inventory');
 }
 run();
+const userSchema= {
+    name: String,
+    email: String,
+    password: String,
+    product: [String]
+ }
+ const User= mongoose.model("User",userSchema);
+ const productSchema={
+     code: String
+ }
+ const Product= mongoose.model("Product",productSchema);
+ const listproductSchema={
+     code: String
+ }
+ const listProduct= mongoose.model("listProduct",productSchema);
+ const invSchema=mongoose.Schema;
+ const Inventory= mongoose.model("Inventory",new invSchema({item:String, price:Number}),'inventory');
 
 app.get("/",function(req,res){
     res.sendFile(__dirname+"/index.html")
