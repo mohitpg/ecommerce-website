@@ -8,7 +8,7 @@ const app=express();
 app.set("view engine","ejs");
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
-mongoose.connect("mongodb://127.0.0.1:27017/ecom");
+mongoose.connect("mongodb+srv://mohitpgupta1102:Secret1102@clusteroose.czt0fuc.mongodb.net/ecom");
 const userSchema= {
     name: String,
     email: String,
@@ -212,7 +212,7 @@ app.post("/views/order",function(req,res){
     res.render("order/order",{itemc:checkout})
     notifier.notify('Your order has been placed');
 })
-app.listen(3000,()=>{
+app.listen(process.env.PORT || 3000,()=>{
     console.log("ok");
 })
 //736b677ceeca34c64969e4d233c135c3-us17
