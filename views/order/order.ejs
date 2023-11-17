@@ -11,8 +11,11 @@
         <% } %>
         <input type="text" name="newitem" placeholder="Enter address">
         <form class="item" action="/views/order" method="post">
-            <input type="text" name="newitem" placeholder="Add from cart">
+            <input type="text" name="newitem" placeholder="Click + to add from cart or add here">
             <button type="submit" name="button">+</button>
         </form>
+    </div>
+    <div class="box" id="heading" style="margin-top: 5%;">
+        <h1 style="color: green;">Go to payment gateway</h1>
     </div>
 <%- include("../footer.ejs") %>
